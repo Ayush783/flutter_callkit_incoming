@@ -89,6 +89,8 @@ data class Data(val args: Map<String, Any?>) {
     var audioRoute: Int = (args["audioRoute"] as? Int) ?: 1
     @JsonProperty("isMuted")
     var isMuted: Boolean = (args["isMuted"] as? Boolean) ?: false
+    @JsonProperty("callDeniedReason")
+    var callDeniedReason :  List<String> = emptyList()
 
     init {
         var android: Map<String, Any?>? = args["android"] as? HashMap<String, Any?>?
@@ -105,7 +107,7 @@ data class Data(val args: Map<String, Any?>) {
         incomingCallNotificationChannelName =
             android["incomingCallNotificationChannelName"] as? String
         missedCallNotificationChannelName = android["missedCallNotificationChannelName"] as? String
-
+        callDeniedReason = (android["callDeniedReason"] as? List<String>) ?: emptyList()
         val missedNotification: Map<String, Any?>? =
             args["missedCallNotification"] as? Map<String, Any?>?
 
@@ -151,7 +153,7 @@ data class Data(val args: Map<String, Any?>) {
         bundle.putLong(CallkitConstants.EXTRA_CALLKIT_DURATION, duration)
         bundle.putString(CallkitConstants.EXTRA_CALLKIT_TEXT_ACCEPT, textAccept)
         bundle.putString(CallkitConstants.EXTRA_CALLKIT_TEXT_DECLINE, textDecline)
-
+        bundle.putStringArrayList(CallkitConstants.EXTRA_DECLINE_REASON_CALL_END, ArrayList(callDeniedReason));
         missedNotificationId?.let {
             bundle.putInt(
                 CallkitConstants.EXTRA_CALLKIT_MISSED_CALL_ID,

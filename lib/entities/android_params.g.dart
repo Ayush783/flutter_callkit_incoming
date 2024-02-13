@@ -21,6 +21,9 @@ AndroidParams _$AndroidParamsFromJson(Map<String, dynamic> json) =>
           json['incomingCallNotificationChannelName'] as String?,
       missedCallNotificationChannelName:
           json['missedCallNotificationChannelName'] as String?,
+      callDeniedReason: (json['callDeniedReason'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$AndroidParamsToJson(AndroidParams instance) =>
@@ -38,4 +41,5 @@ Map<String, dynamic> _$AndroidParamsToJson(AndroidParams instance) =>
           instance.incomingCallNotificationChannelName,
       'missedCallNotificationChannelName':
           instance.missedCallNotificationChannelName,
+      'callDeniedReason': instance.callDeniedReason,
     };

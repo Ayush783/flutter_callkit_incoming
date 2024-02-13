@@ -5,19 +5,19 @@ part 'android_params.g.dart';
 /// Object config for Android.
 @JsonSerializable(explicitToJson: true)
 class AndroidParams {
-  const AndroidParams({
-    this.isCustomNotification,
-    this.isCustomSmallExNotification,
-    this.isShowLogo,
-    this.isShowCallID,
-    this.ringtonePath,
-    this.backgroundColor,
-    this.backgroundUrl,
-    this.actionColor,
-    this.textColor,
-    this.incomingCallNotificationChannelName,
-    this.missedCallNotificationChannelName,
-  });
+  const AndroidParams(
+      {this.isCustomNotification,
+      this.isCustomSmallExNotification,
+      this.isShowLogo,
+      this.isShowCallID,
+      this.ringtonePath,
+      this.backgroundColor,
+      this.backgroundUrl,
+      this.actionColor,
+      this.textColor,
+      this.incomingCallNotificationChannelName,
+      this.missedCallNotificationChannelName,
+      this.callDeniedReason});
 
   /// Using custom notifications.
   final bool? isCustomNotification;
@@ -51,6 +51,8 @@ class AndroidParams {
 
   /// Notification channel name of missed call.
   final String? missedCallNotificationChannelName;
+
+  final List<String>? callDeniedReason;
 
   factory AndroidParams.fromJson(Map<String, dynamic> json) =>
       _$AndroidParamsFromJson(json);

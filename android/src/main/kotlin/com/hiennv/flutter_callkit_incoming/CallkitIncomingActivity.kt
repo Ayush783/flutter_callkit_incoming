@@ -1,13 +1,12 @@
 package com.hiennv.flutter_callkit_incoming
-import android.app.AlertDialog;
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ActivityInfo
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -26,7 +25,12 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hiennv.flutter_callkit_incoming.widgets.RippleRelativeLayout
 import com.squareup.picasso.OkHttp3Downloader
@@ -34,7 +38,6 @@ import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.OkHttpClient
 import kotlin.math.abs
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class CallkitIncomingActivity : Activity() {
 
@@ -353,50 +356,60 @@ class CallkitIncomingActivity : Activity() {
         }
     }
 
+
     private fun onDeclineClick() {
+        val data = intent.extras?.getBundle(CallkitConstants.EXTRA_CALLKIT_INCOMING_DATA)
+        val declineReasonList = data?.getStringArrayList(CallkitConstants.EXTRA_DECLINE_REASON_CALL_END)
 
         val dialogView = LayoutInflater.from(this).inflate(R.layout.showcancelchatreason, null)
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(dialogView)
 
-//        val dialog: AlertDialog = AlertDialog.Builder(this)
-//                .setView(dialogView)
-//                .create()
-
- // Assign your animation style here
-        val radioButton1 = dialogView.findViewById<RadioButton>(R.id.radio_not_interested)
-        val radioButton2 = dialogView.findViewById<RadioButton>(R.id.radio_call_instead)
-        val radioButton3 = dialogView.findViewById<RadioButton>(R.id.radio_call_now)
-        val radioButton4 = dialogView.findViewById<RadioButton>(R.id.radio_call_astrologer)
-        val radioButton5 = dialogView.findViewById<RadioButton>(R.id.radio_call_new)
 
         val textView = dialogView.findViewById<TextView>(R.id.text_view_error)
         val dontCancel = dialogView.findViewById<Button>(R.id.btn_dont_cancel)
         val cancelRequest = dialogView.findViewById<Button>(R.id.btn_cancel_request)
-        val radioButtons = arrayOf(radioButton1, radioButton2, radioButton3, radioButton4, radioButton5)
+        Log.d("declinereason", declineReasonList.toString());
 
+        val relativeLayout = dialogView.findViewById<RelativeLayout>(R.id.radio_relative_layout)
+
+
+//        val radioButtons = arrayOf(radioButton1, radioButton2, radioButton3, radioButton4, radioButton5)
+        val radioGroup =  RadioGroup(this)
+
+        if (declineReasonList != null) {
+            for (i in declineReasonList ){
+                val radioButton = RadioButton(this)
+                radioButton.text = i;
+                radioButton.id = declineReasonList.indexOf(i); // Set a unique id for each radio button
+
+                val blackColor = ContextCompat.getColor(this, R.color.black)
+                radioButton.setTextColor(blackColor) // Set text color to black
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    radioButton.buttonTintList = ColorStateList.valueOf(blackColor)
+                } // Set button tint (color) to black
+
+                radioGroup.addView(radioButton)
+            }
+        }
+        relativeLayout.addView(radioGroup);
 
         dontCancel.setOnClickListener {
-
             bottomSheetDialog.dismiss()
         }
 
         cancelRequest.setOnClickListener {
-            var isAnyRadioButtonSelected = false
 
-            for (radioButton in radioButtons) {
-                if (radioButton.isChecked) {
-                    // At least one radio button is selected
-                    isAnyRadioButtonSelected = true
-                    break  // Exit loop since we found one selected
-                }
-            }
-            if(!isAnyRadioButtonSelected){
+            val checkedRadioButtonId = radioGroup.checkedRadioButtonId
+            val checkedButtonIdText = radioGroup.findViewById<RadioButton>(checkedRadioButtonId)
+
+            if(radioGroup.checkedRadioButtonId == -1){
                 textView.visibility=TextView.VISIBLE
+
             }
             else{
-                val data = intent.extras?.getBundle(CallkitConstants.EXTRA_CALLKIT_INCOMING_DATA)
-                data?.putString(CallkitConstants.EXTRA_REASON_CALL_END_ACTION,radioButton1.text.toString());
+
+                data?.putString(CallkitConstants.EXTRA_REASON_CALL_END_ACTION,checkedButtonIdText.text.toString());
                 val intent = CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
                 sendBroadcast(intent)
                 finishTask()
@@ -405,7 +418,7 @@ class CallkitIncomingActivity : Activity() {
 
         }
         textView.visibility=TextView.INVISIBLE
-//        dialog.show()
+
         bottomSheetDialog.show()
 
     }

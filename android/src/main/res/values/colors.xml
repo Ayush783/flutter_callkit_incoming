@@ -8,4 +8,6 @@
 
     <color name="action_text">#FFFFFF</color>
     <color name="ripple_main_color">#80ffffff</color>
+    <color name="black">#000000</color>
+
 </resources>
