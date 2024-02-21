@@ -190,7 +190,7 @@ class CallkitIncomingBroadcastReceiver : BroadcastReceiver() {
                         CallkitConstants.EXTRA_CALLKIT_MISSED_CALL_NOTIFICATION_CHANNEL_NAME,
                         ""
                 ),
-               "callEndReason" to data.getString(CallkitConstants.EXTRA_REASON_CALL_END_ACTION)
+               "callEndReason" to data.getString(CallkitConstants.EXTRA_REASON_CALL_END_ACTION,"")
         )
         val notification = mapOf(
                 "id" to data.getInt(CallkitConstants.EXTRA_CALLKIT_MISSED_CALL_ID),
@@ -209,7 +209,7 @@ class CallkitIncomingBroadcastReceiver : BroadcastReceiver() {
                 "duration" to data.getLong(CallkitConstants.EXTRA_CALLKIT_DURATION, 0L),
                 "textAccept" to data.getString(CallkitConstants.EXTRA_CALLKIT_TEXT_ACCEPT, ""),
                 "textDecline" to data.getString(CallkitConstants.EXTRA_CALLKIT_TEXT_DECLINE, ""),
-                "extra" to data.getSerializable(CallkitConstants.EXTRA_CALLKIT_EXTRA)!!,
+                "extra" to (data.getSerializable(CallkitConstants.EXTRA_CALLKIT_EXTRA) ?: hashMapOf<String, Any?>()) ,
                 "missedCallNotification" to notification,
                 "android" to android
         )

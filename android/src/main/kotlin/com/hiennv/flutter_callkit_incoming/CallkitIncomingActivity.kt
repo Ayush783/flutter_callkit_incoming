@@ -401,14 +401,13 @@ class CallkitIncomingActivity : Activity() {
         cancelRequest.setOnClickListener {
 
             val checkedRadioButtonId = radioGroup.checkedRadioButtonId
-            val checkedButtonIdText = radioGroup.findViewById<RadioButton>(checkedRadioButtonId)
+
 
             if(radioGroup.checkedRadioButtonId == -1){
                 textView.visibility=TextView.VISIBLE
-
             }
             else{
-
+                val checkedButtonIdText = radioGroup.findViewById<RadioButton>(checkedRadioButtonId)
                 data?.putString(CallkitConstants.EXTRA_REASON_CALL_END_ACTION,checkedButtonIdText.text.toString());
                 val intent = CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
                 sendBroadcast(intent)
