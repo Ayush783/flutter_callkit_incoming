@@ -48,6 +48,18 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
             eventHandlers.reapCollection().forEach {
                 it.get()?.send(event, body)
             }
+
+            if(event == CallkitConstants.ACTION_CALL_DECLINE) {
+                for ((name, channel) in methodChannels) {
+                    try {
+                        val androidData:Map<String,Any> = body["android"] as Map<String, Any>
+                        channel.invokeMethod("CALL_DECLINED_CUSTOM", androidData["callEndReason"])
+                    }catch (e: Exception) {
+                        Log.d(EXTRA_CALLKIT_CALL_DATA , e.toString())
+                    }
+                }
+
+            }
         }
 
         public fun sendEventCustom(event: String, body: Map<String, Any>) {
