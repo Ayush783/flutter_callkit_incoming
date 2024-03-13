@@ -23,6 +23,7 @@
         android:layout_marginTop="20dp"/>
 
     <TextView
+        android:id="@+id/cancel_sheet_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#c4c4c5"

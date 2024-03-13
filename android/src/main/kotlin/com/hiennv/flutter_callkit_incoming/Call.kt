@@ -91,6 +91,8 @@ data class Data(val args: Map<String, Any?>) {
     var isMuted: Boolean = (args["isMuted"] as? Boolean) ?: false
     @JsonProperty("callDeniedReason")
     var callDeniedReason :  List<String> = emptyList()
+    @JsonProperty("cancelSheetSubtitle")
+    var cancelSheetSubtitle: String
 
     init {
         var android: Map<String, Any?>? = args["android"] as? HashMap<String, Any?>?
@@ -108,6 +110,7 @@ data class Data(val args: Map<String, Any?>) {
             android["incomingCallNotificationChannelName"] as? String
         missedCallNotificationChannelName = android["missedCallNotificationChannelName"] as? String
         callDeniedReason = (android["callDeniedReason"] as? List<String>) ?: emptyList()
+        cancelSheetSubtitle = android["cancelSheetSubtitle"] as? String ?: ""
         val missedNotification: Map<String, Any?>? =
             args["missedCallNotification"] as? Map<String, Any?>?
 
@@ -210,6 +213,7 @@ data class Data(val args: Map<String, Any?>) {
             backgroundUrl
         )
         bundle.putString(CallkitConstants.EXTRA_CALLKIT_TEXT_COLOR, textColor)
+        bundle.putString(CallkitConstants.EXTRA_CALLKIT_CANCEL_SHEET_SUBTITLE, cancelSheetSubtitle)
         bundle.putString(CallkitConstants.EXTRA_CALLKIT_ACTION_COLOR, actionColor)
         bundle.putString(CallkitConstants.EXTRA_CALLKIT_ACTION_FROM, from)
         bundle.putString(
@@ -303,6 +307,10 @@ data class Data(val args: Map<String, Any?>) {
             data.textColor = bundle.getString(
                 CallkitConstants.EXTRA_CALLKIT_TEXT_COLOR,
                 "#FFFFFF"
+            )
+            data.cancelSheetSubtitle = bundle.getString(
+                    CallkitConstants.EXTRA_CALLKIT_CANCEL_SHEET_SUBTITLE,
+                    ""
             )
             data.from =
                 bundle.getString(CallkitConstants.EXTRA_CALLKIT_ACTION_FROM, "")

@@ -368,6 +368,8 @@ class CallkitIncomingActivity : Activity() {
 
         val textView = dialogView.findViewById<TextView>(R.id.text_view_error)
         val dontCancel = dialogView.findViewById<Button>(R.id.btn_dont_cancel)
+        val cancelSheetSubtitle = dialogView.findViewById<TextView>(R.id.cancel_sheet_subtitle)
+        cancelSheetSubtitle.text = data?.getString(CallkitConstants.EXTRA_CALLKIT_CANCEL_SHEET_SUBTITLE, "")
         val cancelRequest = dialogView.findViewById<Button>(R.id.btn_cancel_request)
         Log.d("declinereason", declineReasonList.toString());
 

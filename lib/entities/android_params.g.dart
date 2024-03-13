@@ -24,6 +24,7 @@ AndroidParams _$AndroidParamsFromJson(Map<String, dynamic> json) =>
       callDeniedReason: (json['callDeniedReason'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      cancelSheetSubtitle: json['cancelSheetSubtitle'] as String?,
     );
 
 Map<String, dynamic> _$AndroidParamsToJson(AndroidParams instance) =>
@@ -42,4 +43,5 @@ Map<String, dynamic> _$AndroidParamsToJson(AndroidParams instance) =>
       'missedCallNotificationChannelName':
           instance.missedCallNotificationChannelName,
       'callDeniedReason': instance.callDeniedReason,
+      'cancelSheetSubtitle': instance.cancelSheetSubtitle,
     };
