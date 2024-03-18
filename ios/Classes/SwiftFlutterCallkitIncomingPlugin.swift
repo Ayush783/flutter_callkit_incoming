@@ -25,7 +25,7 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
     @objc public private(set) static var sharedInstance: SwiftFlutterCallkitIncomingPlugin!
     
     private var streamHandlers: WeakArray<EventCallbackHandler> = WeakArray([])
-    
+        
     private var callManager: CallManager
     
     private var sharedProvider: CXProvider? = nil
@@ -49,7 +49,7 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
             }
         }
         
-    }
+            }
     
     @objc public func sendEventCustom(_ event: String, body: NSDictionary?) {
         streamHandlers.reap().forEach { handler in
@@ -528,9 +528,9 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         self.answerCall = call
         sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_ACCEPT, self.data?.toJSON())
         if let appDelegate = UIApplication.shared.delegate as? CallkitIncomingAppDelegate {
-            appDelegate.onAccept(call, action)
+                        appDelegate.onAccept(call, action)
         }else {
-            action.fulfill()
+                        action.fulfill()
         }
     }
     

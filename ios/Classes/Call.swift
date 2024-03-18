@@ -154,6 +154,8 @@ public class Call: NSObject {
     @objc public var audioSessionActive: Bool
     @objc public var audioSessionPreferredSampleRate: Double
     @objc public var audioSessionPreferredIOBufferDuration: Double
+    @objc public var callEndReason: String
+    @objc public var callEndReasonList: [String]
     
     @objc public init(id: String, nameCaller: String, handle: String, type: Int) {
         self.uuid = id
@@ -181,6 +183,8 @@ public class Call: NSObject {
         self.audioSessionActive = true
         self.audioSessionPreferredSampleRate = 44100.0
         self.audioSessionPreferredIOBufferDuration = 0.005
+        self.callEndReason = ""
+        self.callEndReasonList = []
     }
     
     @objc public convenience init(args: NSDictionary) {
@@ -206,6 +210,7 @@ public class Call: NSObject {
         if let ios = args["ios"] as? [String: Any] {
             self.iconName = ios["iconName"] as? String ?? "CallKitLogo"
             self.handleType = ios["handleType"] as? String ?? ""
+            self.callEndReason = ios["callEndReason"] as? String ?? ""
             self.supportsVideo = ios["supportsVideo"] as? Bool ?? true
             self.maximumCallGroups = ios["maximumCallGroups"] as? Int ?? 2
             self.maximumCallsPerCallGroup = ios["maximumCallsPerCallGroup"] as? Int ?? 1
@@ -220,9 +225,11 @@ public class Call: NSObject {
             self.audioSessionActive = ios["audioSessionActive"] as? Bool ?? true
             self.audioSessionPreferredSampleRate = ios["audioSessionPreferredSampleRate"] as? Double ?? 44100.0
             self.audioSessionPreferredIOBufferDuration = ios["audioSessionPreferredIOBufferDuration"] as? Double ?? 0.005
+            self.callEndReasonList = ios["callEndReasonList"] as? [String] ?? []
         }else {
             self.iconName = args["iconName"] as? String ?? "CallKitLogo"
             self.handleType = args["handleType"] as? String ?? ""
+            self.callEndReason = args["callEndReason"] as? String ?? ""
             self.supportsVideo = args["supportsVideo"] as? Bool ?? true
             self.maximumCallGroups = args["maximumCallGroups"] as? Int ?? 2
             self.maximumCallsPerCallGroup =  args["maximumCallsPerCallGroup"] as? Int ?? 1
@@ -237,6 +244,7 @@ public class Call: NSObject {
             self.audioSessionActive = args["audioSessionActive"] as? Bool ?? true
             self.audioSessionPreferredSampleRate = args["audioSessionPreferredSampleRate"] as? Double ?? 44100.0
             self.audioSessionPreferredIOBufferDuration = args["audioSessionPreferredIOBufferDuration"] as? Double ?? 0.005
+            self.callEndReasonList = args["callEndReasonList"] as? [String] ?? []
         }
     }
     
@@ -257,7 +265,9 @@ public class Call: NSObject {
             "audioSessionMode": audioSessionMode,
             "audioSessionActive": audioSessionActive,
             "audioSessionPreferredSampleRate": audioSessionPreferredSampleRate,
-            "audioSessionPreferredIOBufferDuration": audioSessionPreferredIOBufferDuration
+            "audioSessionPreferredIOBufferDuration": audioSessionPreferredIOBufferDuration,
+            "callEndReason": callEndReason,
+            "callEndReasonList": callEndReasonList
         ]
         let map: [String : Any] = [
             "uuid": uuid,
