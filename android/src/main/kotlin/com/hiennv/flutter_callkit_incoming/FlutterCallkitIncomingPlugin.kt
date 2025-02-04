@@ -48,7 +48,7 @@ class FlutterCallkitIncomingPlugin : FlutterPlugin, MethodCallHandler, ActivityA
             if(event == CallkitConstants.ACTION_CALL_DECLINE) {
                 for ((name, channel) in methodChannels) {
                     try {
-                        channel.invokeMethod("CALL_DECLINED_CUSTOM")
+                        channel.invokeMethod("CALL_DECLINED_CUSTOM","")
                     }catch (e: Exception) {
                         Log.d(EXTRA_CALLKIT_CALL_DATA , e.toString())
                     }
