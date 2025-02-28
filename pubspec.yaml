@@ -1,6 +1,6 @@
 name: flutter_callkit_incoming
 description: Flutter Callkit Incoming to show callkit screen in your Flutter app.
-version: 2.5.0
+version: 2.5.0-dmtf-fix
 homepage: https://github.com/hiennguyen92/flutter_callkit_incoming
 repository: https://github.com/hiennguyen92/flutter_callkit_incoming
 issue_tracker: https://github.com/hiennguyen92/flutter_callkit_incoming/issues
@@ -19,7 +19,7 @@ dependencies:
   json_annotation: ^4.8.0
 
 dev_dependencies:
-  build_runner: ^2.4.4
+  build_runner: 
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
